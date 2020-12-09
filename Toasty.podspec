@@ -25,6 +25,7 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
+  Toasty provide a view with the message you want to tip your users. It's easy to use, with customize Y position, colors and much more properties.
                    DESC
 
   spec.homepage     = "https://github.com/beatman423/Toasty"
@@ -90,7 +91,10 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "Classes", "Classes/Toasty/*.swift"
+  spec.source_files  = "Classes", "Toasty/*.swift"
+
+  spec.swift_versions = "5.0"
+
   # spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "Classes/**/*.h"
