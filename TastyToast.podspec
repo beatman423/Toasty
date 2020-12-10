@@ -15,8 +15,8 @@ Pod::Spec.new do |spec|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  spec.name         = "Toasty"
-  spec.version      = "1.0.0"
+  spec.name         = "TastyToast"
+  spec.version      = "1.0.3"
   spec.summary      = "A easy to use toast view."
 
   # This description is used to generate tags and improve search results.
@@ -91,7 +91,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "Classes", "Toasty/*.swift"
+  spec.source_files  = "Classes", "Classes/Toasty/*.swift"
 
   spec.swift_versions = "5.0"
 

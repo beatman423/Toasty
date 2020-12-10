@@ -8,27 +8,27 @@
 import Foundation
 import UIKit
 
-class Toasty {
+open class Toasty {
     
     var config: ToastUIConfig!
     
-    class func show(title: String = "", content: String, _ uiConfig: ToastUIConfig = ToastUIConfig.defaultConfig) {
+    public class func show(title: String = "", content: String, _ uiConfig: ToastUIConfig = ToastUIConfig()) {
         let contentConfig = ToastContentConfig(title: title, content: content)
         TastyToast.shared.makeToast(with: uiConfig, contentConfig: contentConfig)
     }
     
-    class func flash(delay: CGFloat = 1.0, title: String = "", content: String, _ uiConfig: ToastUIConfig = ToastUIConfig.defaultConfig) {
+    public class func flash(delay: CGFloat = 1.0, title: String = "", content: String, _ uiConfig: ToastUIConfig = ToastUIConfig()) {
         let contentConfig = ToastContentConfig(title: title, content: content)
         TastyToast.shared.makeFlashToast(delay: delay, uiConfig, contentConfig: contentConfig)
     }
     
-    class func hide() {
+    public class func hide() {
         TastyToast.shared.hideToast()
     }
     
 }
 
-class TastyToast {
+open class TastyToast {
     
     static let shared = TastyToast()
     
@@ -48,7 +48,7 @@ class TastyToast {
         }
     }
     
-    func makeFlashToast(delay: CGFloat, _ uiConfig: ToastUIConfig = ToastUIConfig.defaultConfig, contentConfig: ToastContentConfig) {
+    func makeFlashToast(delay: CGFloat, _ uiConfig: ToastUIConfig = ToastUIConfig(), contentConfig: ToastContentConfig) {
         self.makeToast(with: uiConfig, contentConfig: contentConfig)
         self.timer = Timer.scheduledTimer(timeInterval: TimeInterval(delay), target: self, selector: #selector(hideToast), userInfo: nil, repeats: false)
     }
@@ -145,22 +145,22 @@ struct ToastContentConfig {
     var content: String!
 }
 
-struct ToastUIConfig {
+open class ToastUIConfig {
     
-    var backgroundColor = UIColor.black.withAlphaComponent(0.6)
-    var titleColor: UIColor = UIColor.white
-    var titleFont: UIFont = UIFont.systemFont(ofSize: 14)
-    var contentColor: UIColor = UIColor.white
-    var contentFont: UIFont = UIFont.systemFont(ofSize: 12)
-    var cornerRadius: CGFloat = 8.0
-    var borderWidth: CGFloat = 1
-    var borderColor: UIColor = .clear
-    var bottomOffset: CGFloat = 44
-    var estimateWidth: CGFloat = UIScreen.main.bounds.width/4
-    var tapDiappearEnabled: Bool = true
-    var shadowEnabled: Bool = true
+    public var backgroundColor = UIColor.black.withAlphaComponent(0.6)
+    public var titleColor: UIColor = UIColor.white
+    public var titleFont: UIFont = UIFont.systemFont(ofSize: 14)
+    public var contentColor: UIColor = UIColor.white
+    public var contentFont: UIFont = UIFont.systemFont(ofSize: 12)
+    public var cornerRadius: CGFloat = 8.0
+    public var borderWidth: CGFloat = 1
+    public var borderColor: UIColor = .clear
+    public var bottomOffset: CGFloat = 44
+    public var estimateWidth: CGFloat = UIScreen.main.bounds.width/4
+    public var tapDiappearEnabled: Bool = true
+    public var shadowEnabled: Bool = true
     
-    static let defaultConfig: ToastUIConfig = ToastUIConfig()
+    public init() { }
     
 }
 
