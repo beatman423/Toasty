@@ -45,6 +45,10 @@ open class TastyToast {
             UIApplication.shared.keyWindow?.addSubview(self.toast!)
             self.toast?.show()
             self.toastShowing = true
+            if uiConfig.tapDiappearEnabled {
+                let tap = UITapGestureRecognizer(target: self, action: #selector(hideToast))
+                self.toast?.addGestureRecognizer(tap)
+            }
         }
     }
     
@@ -54,9 +58,13 @@ open class TastyToast {
     }
     
     @objc func hideToast() {
-        self.toast?.hide()
         self.timer?.invalidate()
         self.toastShowing = false
+        UIView.animate(withDuration: 0.3) {
+            self.toast?.alpha = 0
+        } completion: { (_) in
+            self.toast?.removeFromSuperview()
+        }
     }
     
 }
@@ -94,10 +102,14 @@ internal class ToastContainer: UIView {
         let contentHeight = contentConfig.content?.height(width: uiConfig.estimateWidth-20, font: uiConfig.contentFont) ?? 0
         let heightOffset = textPadding * ((contentConfig.title?.count ?? 0) > 0 ? 3 : 2)
         let bottomOffScreenHeight: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        let toastHeight = titleHeight + contentHeight + heightOffset
+        if toastHeight > uiConfig.estimateWidth - 20 {
+            uiConfig.estimateWidth = toastHeight + toastHeight/2
+        }
         self.frame = CGRect(x: UIScreen.main.bounds.width/2 - uiConfig.estimateWidth/2,
                             y: UIScreen.main.bounds.height - bottomOffScreenHeight - uiConfig.bottomOffset - titleHeight - contentHeight,
                             width: uiConfig.estimateWidth,
-                            height: titleHeight + contentHeight + heightOffset)
+                            height: toastHeight)
         self.titleLabel = UILabel(frame: CGRect(x: textPadding, y: textPadding, width: self.frame.width-textPadding*2, height: (contentConfig.title?.count  ?? 0) > 0 ? titleHeight : 0))
         let titleLabelTop: CGFloat = (contentConfig.title?.count ?? 0) > 0 ? 5 : 0
         self.contentLabel = UILabel(frame: CGRect(x: 10, y: titleLabel.frame.height + titleLabelTop + textPadding, width: self.frame.width-20, height: contentHeight))
@@ -113,10 +125,6 @@ internal class ToastContainer: UIView {
         self.contentLabel.textAlignment = .center
         self.addSubview(titleLabel)
         self.addSubview(contentLabel)
-        if uiConfig.tapDiappearEnabled {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.hide))
-            self.addGestureRecognizer(tap)
-        }
         if uiConfig.shadowEnabled {
             self.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
             self.layer.shadowOffset = CGSize(width: 1, height: 1)
